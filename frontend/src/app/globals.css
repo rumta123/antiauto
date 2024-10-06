@@ -1,0 +1,43 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+@layer tailwind-base, primereact, tailwind-utilities;
+
+@layer tailwind-base {
+    @tailwind base;
+}
+
+@layer tailwind-utilities {
+    @tailwind components;
+    @tailwind utilities;
+}
+
+
+.custom-ui-select span {
+    padding: 0;
+}
+
+.text-nowrap {
+    text-wrap: nowrap;
+}
+
+.text-xxs {
+    font-size: 0.625rem;    /* 10px */
+    line-height: 0.75rem;   /* 12px */
+}
+
+input:-webkit-autofill,
+input:hover:-webkit-autofill,
+input:focus:-webkit-autofill {
+    background-color: transparent !important;
+    -webkit-box-shadow: 0 0 0 100px white inset;
+    /* font-style: italic; */
+}
+
+.multi-line-clamp-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    /* Количество строк */
+    overflow: hidden;
+}

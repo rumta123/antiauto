@@ -1,0 +1,110 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:14.1-alpine
+    # container_name: db
+    restart: always
+    environment:
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    ports:
+      - '${DATABASE_PORT}:${DATABASE_PORT}'
+    networks:
+      - auctionnet
+    volumes:
+      - db:/var/lib/postgresql/data
+      
+  redis: 
+    image: redis:7.2
+    restart: always
+    ports:
+      - '${REDIS_PORT}:6379'
+    networks:
+      - auctionnet
+    volumes:
+      - redis_data:/data
+
+  backend:
+    build:
+      context: ../../backend
+      dockerfile: ../docker-config/prod/Dockerfile.backend
+      args:
+        - PORT=${BACKEND_PORT}
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      COLD_START: ${COLD_START}             # ТОЛЬКО ДЛЯ ХОЛОДНОГО ПУСКА, инициализирует бд
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      REDIS_PORT: ${REDIS_PORT}
+    ports:
+      - '${BACKEND_PORT}:${BACKEND_PORT}'
+    depends_on:
+      - redis
+    networks:
+      - auctionnet
+    volumes:
+      - log:/app/log
+
+  db_migration:
+    build:
+      context: ../../db_migration
+      dockerfile: ../docker-config/dev/Dockerfile.dbmigration
+      args:
+        - PORT=${DB_MIGRATION_PORT}
+        - DATABASE_HOST=${DATABASE_HOST}
+        - DATABASE_PORT=${DATABASE_PORT}
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      ROOTUSER_EMAIL: ${ROOTUSER_EMAIL}
+      ROOTUSER_INITPASSWORD: ${ROOTUSER_INITPASSWORD}
+    ports:
+      - '${DB_MIGRATION_PORT}:${DB_MIGRATION_PORT}'
+    networks:
+      - auctionnet
+    depends_on:
+      - db
+      - backend
+    volumes:
+      - ../../db_migration/src:/app/src
+      - ../../db_migration/carbase:/app/carbase
+      - log:/app/log
+    command: ./wait-for-it.sh backend:${BACKEND_PORT} -- sh -c 'npm run migration:run && npm run start:dev'
+
+
+  frontend:
+    build:
+      context: ../../frontend
+      dockerfile: ../docker-config/prod/Dockerfile.frontend
+      args:
+        - PORT=${FRONTEND_PORT}
+        - BACKEND_HOST=${BACKEND_HOST}
+        - BACKEND_PORT=${BACKEND_PORT}
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      BACKEND_HOST: ${BACKEND_HOST}
+      BACKEND_PORT: ${BACKEND_PORT}
+    ports:
+      - '${FRONTEND_PORT}:${FRONTEND_PORT}'
+    networks:
+      - auctionnet
+    volumes:
+      - ../../frontend/src:/app/src
+      - ../../frontend/tailwind.config.ts:/app/tailwind.config.ts
+
+volumes:
+  db:
+  rabbitmq_data:
+  log:
+  redis_data:
+
+
+networks:
+  auctionnet:

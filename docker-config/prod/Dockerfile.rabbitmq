@@ -1,0 +1,11 @@
+FROM rabbitmq:3.12-management-alpine
+
+# Установка curl
+RUN apk add --no-cache curl
+
+# Копирование и установка прав на скрипт инициализации
+COPY ./scripts/init-rabbitmq-queues.sh /init-rabbitmq-queues.sh
+RUN chmod +x /init-rabbitmq-queues.sh
+
+# Запуск RabbitMQ и скрипта инициализации
+ENTRYPOINT ["bash", "-c", "rabbitmq-server"]

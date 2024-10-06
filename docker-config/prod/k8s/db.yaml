@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: wheel-and-deal
+data:
+  postgresDb: "postgres"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: wheel-and-deal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wheel-and-deal-db
+  template:
+    metadata:
+      labels:
+        app: wheel-and-deal-db
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:14.1-alpine
+        env:
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: wheel-and-deal-secret
+                key: database_user
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: wheel-and-deal-secret
+                key: database_password
+          - name: POSTGRES_DB
+            valueFrom:
+              configMapKeyRef:
+                name: postgres-config
+                key: postgresDb
+        ports:
+          - containerPort: 5432
+      #   volumeMounts:
+      #     - mountPath: /var/lib/postgresql/data
+      #       name: postgres-storage
+      # volumes:
+      #   - name: postgres-storage
+      #     persistentVolumeClaim:
+      #       claimName: postgres-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: wheel-and-deal
+spec:
+  type: ClusterIP
+  selector:
+    app: wheel-and-deal-db
+  ports:
+    - port: 5432
+      targetPort: 5432
+      protocol: TCP
+  

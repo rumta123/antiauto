@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wheel-and-deal-frontend
+  namespace: wheel-and-deal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wheel-and-deal-frontend
+  template:
+    metadata:
+      labels:
+        app: wheel-and-deal-frontend
+        tier: frontend
+    spec:
+      containers:
+        - name: wheel-and-deal-frontend
+          image: hub.musk.fun/k8s/wheel-and-deal/frontend:latest
+          env:
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: wheel-and-deal-secret
+                  key: frontend_port
+            - name: BACKEND_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: wheel-and-deal-secret
+                  key: backend_host
+            - name: BACKEND_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: wheel-and-deal-secret
+                  key: backend_port
+      imagePullSecrets:
+        - name: hubcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wheel-and-deal-frontend-outter-np
+  namespace: wheel-and-deal
+spec:
+  type: NodePort
+  selector:
+    app: wheel-and-deal-frontend
+  ports:
+    - name: wheel-and-deal-frontend-public
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 32120

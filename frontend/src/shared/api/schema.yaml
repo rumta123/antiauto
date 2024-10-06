@@ -1,0 +1,2135 @@
+openapi: 3.0.0
+paths:
+  /v1:
+    get:
+      operationId: AppController_getHello
+      parameters: []
+      responses:
+        '200':
+          description: ''
+  /v1/account:
+    get:
+      operationId: AccountController_getAccount
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDto'
+    patch:
+      operationId: AccountController_patchAccount
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchAccountDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDto'
+  /v1/account/phone:
+    patch:
+      operationId: AccountController_patchAccountPhone
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchAccountPhoneDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDto'
+  /v1/account/verify-phone:
+    post:
+      operationId: AccountController_postAccountPhoneVerify
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostAccountPhoneVerifyDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDto'
+  /v1/account/sub-accounts:
+    get:
+      operationId: AccountController_getSubAccounts
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubAccountDto'
+  /v1/auth/sign-up:
+    post:
+      operationId: AuthController_signUp
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpBodyDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResDto'
+  /v1/auth/sign-up-sub:
+    post:
+      operationId: AuthController_signUpSub
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpSubAccountBodyDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResDto'
+  /v1/auth/sign-in:
+    post:
+      operationId: AuthController_signIn
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignInBodyDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResDto'
+  /v1/auth/sign-out:
+    post:
+      operationId: AuthController_signOut
+      parameters: []
+      responses:
+        '200':
+          description: ''
+  /v1/auth/send-code:
+    post:
+      operationId: AuthController_sendCode
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailBodyDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResDto'
+  /v1/auth/verify-email:
+    post:
+      operationId: AuthController_emailVerify
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailVerificationDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResDto'
+  /v1/auth/reset-password:
+    post:
+      operationId: AuthController_resetPassword
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordBodyDto'
+      responses:
+        '200':
+          description: ''
+  /v1/auth/change-password:
+    post:
+      operationId: AuthController_changePassword
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordBodyDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResDto'
+  /v1/auth/session:
+    get:
+      operationId: AuthController_getSessionInfo
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSessionInfoDto'
+  /v1/car-catalog:
+    get:
+      operationId: CarCatalogController_getAllBrands
+      parameters:
+        - name: limit
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: random
+          required: false
+          in: query
+          schema:
+            type: boolean
+        - name: popular
+          required: false
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MarkDto'
+  /v1/car-catalog/model-info/{modelId}:
+    get:
+      operationId: CarCatalogController_getModelinfo
+      parameters:
+        - name: modelId
+          required: true
+          in: path
+          description: ID модели автомобиля
+          example: ALFA_ROMEO_MITO
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelDto'
+  /v1/car-catalog/configuration-info/{generationId_configurationId}:
+    get:
+      operationId: CarCatalogController_getConfigurationInfo
+      parameters:
+        - name: generationId_configurationId
+          required: true
+          in: path
+          description: ID поколения и типа кузова
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerationDto'
+  /v1/car-catalog/catalog-info/options_dict:
+    get:
+      operationId: CarCatalogController_getOptionsDictionary
+      parameters: []
+      responses:
+        '200':
+          description: ''
+  /v1/car-catalog/catalog-info/{engine_hash}:
+    get:
+      operationId: CarCatalogController_getBrandModelGenConfInfoByEngineHash
+      parameters:
+        - name: engine_hash
+          required: true
+          in: path
+          description: хэш двигателя
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrandModelGenConfDto'
+  /v1/car-catalog/complectation-info/{engine_hash}:
+    get:
+      operationId: CarCatalogController_getComplectationInfoByEngineHash
+      parameters:
+        - name: engine_hash
+          required: true
+          in: path
+          description: хэш двигателя
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModificationDto'
+  /v1/car-catalog/specification-info/{engine_hash}:
+    get:
+      operationId: CarCatalogController_getComplectationSpecificationInfoByEngineHash
+      parameters:
+        - name: engine_hash
+          required: true
+          in: path
+          description: хэш двигателя
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedModificationDto'
+  /v1/car-catalog/options-map/modificationId={modificationId}:
+    get:
+      operationId: CarCatalogController_getOptionsByConfiguration
+      parameters:
+        - name: modificationId
+          required: true
+          in: path
+          description: ID модификации автомобиля
+          example: '20176770_20235840_20235599'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OptionsAttrMapCategoryDictionaryDto'
+  /v1/car-catalog/options-map/engine={engineHash}:
+    get:
+      operationId: CarCatalogController_getOptionsByEngineHash
+      parameters:
+        - name: engineHash
+          required: true
+          in: path
+          description: '{Хэш двигатель-объём-тип_топлива-привод-лс-коробка}'
+          example: 9a7449364022cf89d0741ac177bc3253
+          schema:
+            type: string
+        - name: complectationId
+          required: false
+          in: query
+          description: ID комплектации(модификации) автомобиля
+          example: '20176770_20235840_20235599'
+          schema:
+            type: string
+        - name: part
+          required: false
+          in: query
+          example: default
+          description: >-
+            не заполнено - все опции, default - только общие бесплатные для всех
+            комплектаций, paid - только те, где хотя бы в 1 комплектации опция
+            платная
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OptionsAttrMapCategoryDictionaryDto'
+  /v1/car-catalog/complectations/engine={engineHash}:
+    get:
+      operationId: CarCatalogController_getComplectationNamesWithOptionsByEngineHash
+      parameters:
+        - name: engineHash
+          required: true
+          in: path
+          description: '{Хэш двигатель-объём-тип_топлива-привод-лс-коробка}'
+          example: 9a7449364022cf89d0741ac177bc3253
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ComplectationWithOptionsDto'
+  /v1/car-catalog/{markId}:
+    get:
+      operationId: CarCatalogController_getMarkWithModels
+      parameters:
+        - name: markId
+          required: true
+          in: path
+          description: ID марки автомобиля
+          example: ALFA_ROMEO
+          schema:
+            type: string
+        - name: onlyBrandData
+          required: false
+          in: query
+          description: Показать только данные бренда
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarkWithModelsDto'
+  /v1/car-catalog/{markId}/{modelId}:
+    get:
+      operationId: CarCatalogController_getGenerationsByModel
+      parameters:
+        - name: markId
+          required: true
+          in: path
+          description: ID марки автомобиля
+          example: ALFA_ROMEO
+          schema:
+            type: string
+        - name: modelId
+          required: true
+          in: path
+          description: ID модели автомобиля
+          example: MITO
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GenerationDto'
+  /v1/car-catalog/{markId}/{modelId}/{generationId}:
+    get:
+      operationId: CarCatalogController_getConfigurationsByGeneration
+      parameters:
+        - name: markId
+          required: true
+          in: path
+          description: ID марки автомобиля
+          example: ALFA_ROMEO
+          schema:
+            type: string
+        - name: modelId
+          required: true
+          in: path
+          description: ID модели автомобиля
+          example: MITO
+          schema:
+            type: string
+        - name: generationId
+          required: true
+          in: path
+          description: ID поколения автомобиля
+          example: '20176738'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConfigurationDto'
+  /v1/car-catalog/{markId}/{modelId}/{generationId}/{configurationId}:
+    get:
+      operationId: CarCatalogController_getModificationByConfiguration
+      parameters:
+        - name: markId
+          required: true
+          in: path
+          description: ID марки автомобиля
+          example: ALFA_ROMEO
+          schema:
+            type: string
+        - name: modelId
+          required: true
+          in: path
+          description: ID модели автомобиля
+          example: MITO
+          schema:
+            type: string
+        - name: generationId
+          required: true
+          in: path
+          description: ID поколения автомобиля
+          example: '20176738'
+          schema:
+            type: string
+        - name: configurationId
+          required: true
+          in: path
+          description: ID конфигурации автомобиля
+          example: '20176770'
+          schema:
+            type: string
+        - name: groupByEngine
+          required: false
+          in: query
+          description: Группировать по hash engine
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ModificationDto'
+  /v1/car-catalog/{markId}/{modelId}/{generationId}/{configurationId}/{modificationId}:
+    get:
+      operationId: CarCatalogController_getDetailedModification
+      parameters:
+        - name: markId
+          required: true
+          in: path
+          description: ID марки автомобиля
+          example: ALFA_ROMEO
+          schema:
+            type: string
+        - name: modelId
+          required: true
+          in: path
+          description: ID модели автомобиля
+          example: MITO
+          schema:
+            type: string
+        - name: generationId
+          required: true
+          in: path
+          description: ID поколения автомобиля
+          example: '20176738'
+          schema:
+            type: string
+        - name: configurationId
+          required: true
+          in: path
+          description: ID конфигурации автомобиля
+          example: '20176770'
+          schema:
+            type: string
+        - name: modificationId
+          required: true
+          in: path
+          description: ID модификации автомобиля
+          example: '20176770_20235840_20235599'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedModificationDto'
+  /v1/cities:
+    get:
+      operationId: CitiesController_getCities
+      parameters:
+        - name: name
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CityDto'
+  /v1/lots:
+    post:
+      operationId: LotsController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LotCreateDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LotIdDto'
+    get:
+      operationId: LotsController_getAllLots
+      parameters:
+        - name: involved
+          required: false
+          in: query
+          description: >-
+            Поиск только тех лотов, где есть предложения, владельцем которых
+            является пользователь(дилер)
+          schema:
+            type: boolean
+        - name: mark_id
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: model_id
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: gen_id
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: conf_id
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: city_id
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: status
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: minPrice
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: dealer_car_id
+          required: false
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LotDto'
+  /v1/lots/by_car_id/{car_id}:
+    get:
+      operationId: LotsController_getLotsByCarId
+      parameters:
+        - name: car_id
+          required: true
+          in: path
+          description: ID автомобиля в виде uuid
+          example: 19fe4254-0f58-4c9c-9ffc-ac96998b72c8
+          schema:
+            type: string
+        - name: part
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LotDto'
+  /v1/lots/{lot_id}:
+    get:
+      operationId: LotsController_getLotById
+      parameters:
+        - name: lot_id
+          required: true
+          in: path
+          description: ID аукциона в виде uuid
+          example: 19fe4254-0f58-4c9c-9ffc-ac96998b72c8
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LotDto'
+  /v1/lots/{lot_id}/options:
+    get:
+      operationId: LotsController_getLotOptionsByLotId
+      parameters:
+        - name: lot_id
+          required: true
+          in: path
+          description: ID аукциона в виде uuid
+          example: 19fe4254-0f58-4c9c-9ffc-ac96998b72c8
+          schema:
+            type: string
+        - name: strict
+          required: true
+          in: query
+          description: обязательные/желательные опции
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OptionsCategoryDictionaryDto'
+  /v1/offers:
+    post:
+      operationId: OffersController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OfferCreateDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferDto'
+    get:
+      operationId: OffersController_getOffers
+      parameters:
+        - name: lot_id
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OfferDto'
+  /v1/offers/create:
+    get:
+      operationId: OffersController_getOffersTemplates
+      parameters:
+        - name: lot_id
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OfferCreateDto'
+  /v1/offers/{offer_id}:
+    get:
+      operationId: OffersController_getOfferById
+      parameters:
+        - name: offer_id
+          required: true
+          in: path
+          description: ID предложения в виде uuid
+          example: 19fe4254-0f58-4c9c-9ffc-ac96998b72c8
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferDto'
+    delete:
+      operationId: OffersController_deleteOfferById
+      parameters:
+        - name: offer_id
+          required: true
+          in: path
+          description: ID предложения в виде uuid
+          example: 19fe4254-0f58-4c9c-9ffc-ac96998b72c8
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferIdDto'
+  /v1/offers/{offer_id}/{statusDirection}:
+    post:
+      operationId: OffersController_setOfferStatus
+      parameters:
+        - name: offer_id
+          required: true
+          in: path
+          description: ID предложения в виде uuid
+          example: 19fe4254-0f58-4c9c-9ffc-ac96998b72c8
+          schema:
+            type: string
+        - name: statusDirection
+          required: true
+          in: path
+          description: новый статус предложения
+          schema:
+            type: string
+            enum:
+              - prev
+              - next
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferDto'
+  /v1/offers/by_car_id/{car_id}:
+    delete:
+      operationId: OffersController_deleteOffersByCarId
+      parameters:
+        - name: car_id
+          required: true
+          in: path
+          description: ID автомобиля в виде uuid
+          example: 19fe4254-0f58-4c9c-9ffc-ac96998b72c8
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+  /v1/offers/status_by_car/{car_id}:
+    get:
+      operationId: OffersController_getMostImportantStatusByCarId
+      parameters:
+        - name: car_id
+          required: true
+          in: path
+          description: ID автомобиля в виде uuid
+          example: 19fe4254-0f58-4c9c-9ffc-ac96998b72c8
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OffersStatusDto'
+  /v1/dealers-cars:
+    post:
+      operationId: DealersCarsController_create
+      parameters:
+        - name: engine_hash
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: complectation_id
+          required: false
+          in: query
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchDealersCarDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatchDealersCarDto'
+    get:
+      operationId: DealersCarsController_getAllDealersCars
+      parameters:
+        - name: lot_id
+          required: false
+          in: query
+          description: Поиск автомобилей подходящих под параметры лота
+          schema:
+            type: string
+        - name: only_filled
+          required: false
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DealersCarDto'
+    patch:
+      operationId: DealersCarsController_patchDealersCars
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchDealersCarDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatchDealersCarDto'
+  /v1/dealers-cars/{car_id}:
+    get:
+      operationId: DealersCarsController_getDealersCarById
+      parameters:
+        - name: car_id
+          required: true
+          in: path
+          description: ID автомобиля в виде uuid
+          example: 19fe4254-0f58-4c9c-9ffc-ac96998b72c8
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DealersCarDto'
+    delete:
+      operationId: DealersCarsController_deleteDealersCar
+      parameters:
+        - name: car_id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DealersCarIdDto'
+  /v1/dealers-cars/{car_id}/options:
+    get:
+      operationId: DealersCarsController_getDealersCarMappedOptionsByCarId
+      parameters:
+        - name: car_id
+          required: true
+          in: path
+          description: ID автомобиля в виде uuid
+          example: 19fe4254-0f58-4c9c-9ffc-ac96998b72c8
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OptionsCategoryDictionaryDto'
+  /v1/dealers-cars/patch_info/{car_id}:
+    get:
+      operationId: DealersCarsController_getDealersCarPatchInfoById
+      parameters:
+        - name: car_id
+          required: true
+          in: path
+          description: ID автомобиля в виде uuid
+          example: 19fe4254-0f58-4c9c-9ffc-ac96998b72c8
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatchDealersCarDto'
+  /v1/processes:
+    get:
+      operationId: ProcessesController_getConversations
+      parameters:
+        - name: skip
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: take
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: process_type
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProcessDto'
+    post:
+      operationId: ProcessesController_createMessage
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMessageDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageDto'
+  /v1/processes/{process_id}:
+    get:
+      operationId: ProcessesController_getProcess
+      parameters:
+        - name: process_id
+          required: true
+          in: path
+          description: ID беседы в виде uuid
+          example: 19fe4254-0f58-4c9c-9ffc-ac96998b72c8
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessDto'
+info:
+  title: Car auction
+  description: ''
+  version: 1.0.0
+  contact: {}
+tags: []
+servers: []
+components:
+  schemas:
+    AccountDto:
+      type: object
+      properties:
+        id:
+          type: string
+        ownerId:
+          type: string
+        phone:
+          type: string
+        name:
+          type: string
+        lastname:
+          type: string
+        isPhoneVerified:
+          type: boolean
+        accountType:
+          type: string
+      required:
+        - id
+        - ownerId
+        - phone
+        - name
+        - lastname
+        - isPhoneVerified
+        - accountType
+    PatchAccountDto:
+      type: object
+      properties:
+        id:
+          type: string
+        phone:
+          type: string
+          example: '+79347265382'
+        name:
+          type: string
+          example: Oleg Vasnetsov
+        comment:
+          type: string
+        address:
+          type: string
+    PatchAccountPhoneDto:
+      type: object
+      properties:
+        phone:
+          type: string
+          example: '+79347265382'
+    PostAccountPhoneVerifyDto:
+      type: object
+      properties:
+        phone:
+          type: string
+          example: '+79347265382'
+        code:
+          type: string
+      required:
+        - code
+    SubAccountDto:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        name:
+          type: string
+        comment:
+          type: string
+        address:
+          type: string
+      required:
+        - id
+        - email
+        - phone
+        - createdAt
+        - name
+        - comment
+        - address
+    SignUpBodyDto:
+      type: object
+      properties:
+        email:
+          type: string
+          example: client@example.com
+        password:
+          type: string
+          example: '1234'
+      required:
+        - email
+        - password
+    AuthResDto:
+      type: object
+      properties:
+        email:
+          type: string
+          example: client@example.com
+        isEmailVerified:
+          type: boolean
+      required:
+        - email
+        - isEmailVerified
+    SignUpSubAccountBodyDto:
+      type: object
+      properties:
+        email:
+          type: string
+          example: client@example.com
+        password:
+          type: string
+          example: '1234'
+        name:
+          type: string
+          example: ООО Дилер на Фрунзенской
+        address:
+          type: string
+          example: г. Фрунзенск, ул. Ленина, д. 1
+        phone:
+          type: string
+          example: '+79111111111'
+        comment:
+          type: string
+          example: Основной аккаунт
+      required:
+        - email
+        - password
+        - name
+        - address
+        - phone
+        - comment
+    SignInBodyDto:
+      type: object
+      properties:
+        email:
+          type: string
+          example: client@example.com
+        password:
+          type: string
+          example: '1234'
+      required:
+        - email
+        - password
+    EmailBodyDto:
+      type: object
+      properties:
+        email:
+          type: string
+          example: client@example.com
+      required:
+        - email
+    EmailVerificationDto:
+      type: object
+      properties:
+        email:
+          type: string
+          example: client@example.com
+        code:
+          type: string
+      required:
+        - email
+        - code
+    ResetPasswordBodyDto:
+      type: object
+      properties:
+        email:
+          type: string
+          example: client@example.com
+      required:
+        - email
+    ChangePasswordBodyDto:
+      type: object
+      properties:
+        password:
+          type: string
+          example: '1234'
+        newPassword:
+          type: string
+          example: '1234'
+      required:
+        - password
+        - newPassword
+    GetSessionInfoDto:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        type:
+          type: string
+        iat:
+          type: number
+        exp:
+          type: number
+      required:
+        - id
+        - email
+        - type
+        - iat
+        - exp
+    MarkDto:
+      type: object
+      properties:
+        id:
+          type: string
+          example: ALFA_ROMEO
+        name:
+          type: string
+        cyrillicName:
+          type: string
+        popular:
+          type: boolean
+        country:
+          type: string
+        logo:
+          type: string
+        groupSymbol:
+          type: string
+      required:
+        - id
+        - name
+        - cyrillicName
+        - popular
+        - country
+        - logo
+        - groupSymbol
+    ModelDto:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        cyrillicName:
+          type: string
+        class:
+          type: string
+        yearFrom:
+          type: number
+        yearTo:
+          type: number
+      required:
+        - id
+        - name
+        - cyrillicName
+        - class
+        - yearFrom
+        - yearTo
+    ConfigurationDto:
+      type: object
+      properties:
+        id:
+          type: string
+        doorsCount:
+          type: number
+        bodyType:
+          type: string
+        photo:
+          type: string
+        notice:
+          type: string
+      required:
+        - id
+        - doorsCount
+        - bodyType
+        - photo
+        - notice
+    GenerationDto:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        yearStart:
+          type: number
+        yearStop:
+          type: number
+        isRestyle:
+          type: boolean
+        configurations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigurationDto'
+      required:
+        - id
+        - name
+        - yearStart
+        - yearStop
+        - isRestyle
+        - configurations
+    BrandModelGenConfDto:
+      type: object
+      properties:
+        brand:
+          $ref: '#/components/schemas/MarkDto'
+        model:
+          $ref: '#/components/schemas/ModelDto'
+        generation:
+          $ref: '#/components/schemas/GenerationDto'
+        configuration:
+          $ref: '#/components/schemas/ConfigurationDto'
+      required:
+        - brand
+        - model
+        - generation
+        - configuration
+    ModificationDto:
+      type: object
+      properties:
+        id:
+          type: string
+        engineHash:
+          type: string
+        groupName:
+          type: string
+        horsePower:
+          type: number
+        engineType:
+          type: string
+        transmission:
+          type: string
+        volumeLitres:
+          type: number
+        drive:
+          type: string
+        consumptionMixed:
+          type: number
+        consumptionCity:
+          type: number
+        consumptionHiway:
+          type: number
+        timeTo100:
+          type: number
+      required:
+        - id
+        - engineHash
+        - groupName
+        - horsePower
+        - engineType
+        - transmission
+        - volumeLitres
+        - drive
+        - consumptionMixed
+        - consumptionCity
+        - consumptionHiway
+        - timeTo100
+    OptionsCategoryDictionaryDto:
+      type: object
+      properties: {}
+    SpecificationCategoryDictionaryDto:
+      type: object
+      properties: {}
+    DetailedModificationDto:
+      type: object
+      properties:
+        id:
+          type: string
+        groupName:
+          type: string
+        options:
+          $ref: '#/components/schemas/OptionsCategoryDictionaryDto'
+        specifications:
+          $ref: '#/components/schemas/SpecificationCategoryDictionaryDto'
+        horsePower:
+          type: number
+        engineType:
+          type: string
+        transmission:
+          type: string
+        volumeLitres:
+          type: number
+        drive:
+          type: string
+        consumptionMixed:
+          type: number
+        timeTo100:
+          type: number
+      required:
+        - id
+        - groupName
+        - options
+        - specifications
+        - horsePower
+        - engineType
+        - transmission
+        - volumeLitres
+        - drive
+        - consumptionMixed
+        - timeTo100
+    OptionsAttrMapCategoryDictionaryDto:
+      type: object
+      properties: {}
+    ComplectationWithOptionsDto:
+      type: object
+      properties:
+        id:
+          type: string
+        groupName:
+          type: string
+        options:
+          $ref: '#/components/schemas/OptionsAttrMapCategoryDictionaryDto'
+      required:
+        - id
+        - groupName
+        - options
+    MarkWithModelsDto:
+      type: object
+      properties:
+        id:
+          type: string
+          example: ALFA_ROMEO
+        name:
+          type: string
+        cyrillicName:
+          type: string
+        popular:
+          type: boolean
+        country:
+          type: string
+        logo:
+          type: string
+        groupSymbol:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelDto'
+      required:
+        - id
+        - name
+        - cyrillicName
+        - popular
+        - country
+        - logo
+        - groupSymbol
+        - items
+    CityDto:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        subject:
+          type: string
+        district:
+          type: string
+        population:
+          type: string
+        coords_lat:
+          type: string
+        coords_lon:
+          type: string
+      required:
+        - id
+        - name
+        - subject
+        - district
+        - population
+        - coords_lat
+        - coords_lon
+    LotsOptionsAttrMap:
+      type: object
+      properties: {}
+    LotCreateDto:
+      type: object
+      properties:
+        city_id:
+          type: string
+        max_distance:
+          type: number
+        mark_id:
+          type: string
+        model_id:
+          type: string
+        generation_id:
+          type: string
+        configuration_id:
+          type: string
+        engine_hash:
+          type: string
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/LotsOptionsAttrMap'
+      required:
+        - city_id
+        - max_distance
+        - mark_id
+        - model_id
+        - generation_id
+        - configuration_id
+        - engine_hash
+        - options
+    LotIdDto:
+      type: object
+      properties:
+        lot_uuid:
+          type: string
+        lot_id:
+          type: number
+      required:
+        - lot_uuid
+        - lot_id
+    LotOptionDto:
+      type: object
+      properties:
+        combined_option_id:
+          type: string
+        option_name:
+          type: string
+        value:
+          type: string
+        strict:
+          type: boolean
+      required:
+        - combined_option_id
+        - option_name
+        - value
+        - strict
+    LotStatusDto:
+      type: object
+      properties:
+        timestamp:
+          format: date-time
+          type: string
+        name:
+          type: string
+        isLast:
+          type: boolean
+      required:
+        - timestamp
+        - name
+        - isLast
+    LotDto:
+      type: object
+      properties:
+        lot_uuid:
+          type: string
+        lot_id:
+          type: number
+        is_own:
+          type: boolean
+        city:
+          type: string
+        max_distance:
+          type: number
+        brand:
+          type: string
+        brand_logo:
+          type: string
+        model:
+          type: string
+        configuration:
+          type: string
+        configuration_photo:
+          type: string
+        engine_hash:
+          type: string
+        complectation:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/LotOptionDto'
+        offers_count:
+          type: number
+        own_offers_count:
+          type: number
+        offers_fit_options:
+          type: number
+        offers_min_price:
+          type: number
+        status:
+          $ref: '#/components/schemas/LotStatusDto'
+      required:
+        - lot_uuid
+        - lot_id
+        - is_own
+        - city
+        - max_distance
+        - brand
+        - brand_logo
+        - model
+        - configuration
+        - configuration_photo
+        - engine_hash
+        - complectation
+        - created_at
+        - options
+        - offers_count
+        - own_offers_count
+        - offers_fit_options
+        - offers_min_price
+        - status
+    DealersCarOptionDto:
+      type: object
+      properties:
+        combined_option_id:
+          type: string
+        option_name:
+          type: string
+        value:
+          type: string
+        value_type:
+          type: string
+        dealer_car_id:
+          type: string
+        is_complectation_option:
+          type: boolean
+      required:
+        - combined_option_id
+        - option_name
+        - value
+        - value_type
+        - dealer_car_id
+        - is_complectation_option
+    DealersCarDto:
+      type: object
+      properties:
+        id:
+          type: string
+        sequence:
+          type: number
+        year:
+          type: number
+        mileage:
+          type: number
+        vin:
+          type: string
+        city:
+          type: string
+        brand:
+          type: string
+        brand_id:
+          type: string
+        model:
+          type: string
+        model_id:
+          type: string
+        generation:
+          type: string
+        generation_id:
+          type: string
+        configuration:
+          type: string
+        configuration_id:
+          type: string
+        complectation:
+          type: string
+        complectation_id:
+          type: string
+        engine_hash:
+          type: string
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/DealersCarOptionDto'
+        lots:
+          type: array
+          items:
+            $ref: '#/components/schemas/LotDto'
+        fittableLots:
+          type: array
+          items:
+            $ref: '#/components/schemas/LotDto'
+        status:
+          type: string
+        is_own:
+          type: boolean
+        is_verified:
+          type: boolean
+        is_filled:
+          type: boolean
+        isMileageAbroad:
+          type: boolean
+        photo:
+          type: string
+      required:
+        - id
+        - sequence
+        - year
+        - mileage
+        - vin
+        - city
+        - brand
+        - brand_id
+        - model
+        - model_id
+        - generation
+        - generation_id
+        - configuration
+        - configuration_id
+        - complectation
+        - complectation_id
+        - engine_hash
+        - options
+        - lots
+        - fittableLots
+        - status
+        - is_own
+        - is_verified
+        - is_filled
+        - isMileageAbroad
+        - photo
+    OfferOptionDto:
+      type: object
+      properties:
+        combined_option_id:
+          type: string
+        accordance_type:
+          type: string
+        option_name:
+          type: string
+        value:
+          type: string
+      required:
+        - combined_option_id
+        - accordance_type
+        - option_name
+        - value
+    OfferCreateDto:
+      type: object
+      properties:
+        lot_id:
+          type: string
+        dealers_car_id:
+          type: string
+        dealers_car:
+          $ref: '#/components/schemas/DealersCarDto'
+        price:
+          type: number
+        priceValidTill:
+          type: string
+          format: date-time
+          nullable: true
+        waiting:
+          type: number
+          default: 0
+        isCreditAvailable:
+          type: boolean
+          default: false
+        isInsuranceAvailable:
+          type: boolean
+          default: false
+        isTradeinAvailable:
+          type: boolean
+          default: false
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/OfferOptionDto'
+        city_id:
+          type: string
+      required:
+        - lot_id
+        - dealers_car_id
+        - dealers_car
+        - price
+        - priceValidTill
+        - waiting
+        - isCreditAvailable
+        - isInsuranceAvailable
+        - isTradeinAvailable
+        - options
+        - city_id
+    OffersStatusDto:
+      type: object
+      properties:
+        timestamp:
+          format: date-time
+          type: string
+        name:
+          type: string
+        name_cyrillic:
+          type: string
+        isLast:
+          type: boolean
+        isVisibleForBuyer:
+          type: boolean
+      required:
+        - timestamp
+        - name
+        - name_cyrillic
+        - isLast
+        - isVisibleForBuyer
+    OfferDto:
+      type: object
+      properties:
+        id:
+          type: string
+        sequence:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        lot_id:
+          type: string
+        dealers_car_id:
+          type: string
+        dealer_rating:
+          type: number
+        is_own:
+          type: boolean
+        price:
+          type: number
+        priceValidTill:
+          type: object
+          nullable: true
+        waiting:
+          type: number
+          default: 0
+        isCreditAvailable:
+          type: boolean
+          default: false
+        isInsuranceAvailable:
+          type: boolean
+          default: false
+        isTradeinAvailable:
+          type: boolean
+          default: false
+        distance:
+          type: number
+        message:
+          type: object
+        status:
+          $ref: '#/components/schemas/OffersStatusDto'
+        car:
+          type: object
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/OfferOptionDto'
+      required:
+        - id
+        - sequence
+        - created_at
+        - lot_id
+        - dealers_car_id
+        - dealer_rating
+        - is_own
+        - price
+        - priceValidTill
+        - waiting
+        - isCreditAvailable
+        - isInsuranceAvailable
+        - isTradeinAvailable
+        - distance
+        - message
+        - status
+        - car
+        - options
+    OfferIdDto:
+      type: object
+      properties:
+        id:
+          type: string
+        lot_id:
+          type: string
+      required:
+        - id
+        - lot_id
+    DealersCarOptionsAttrMap:
+      type: object
+      properties: {}
+    DealersCarsPhotos:
+      type: object
+      properties: {}
+    PatchDealersCarDto:
+      type: object
+      properties:
+        id:
+          type: string
+        year:
+          type: number
+        mileage:
+          type: number
+        isMileageAbroad:
+          type: boolean
+        vin:
+          type: string
+        city_id:
+          type: string
+        city_name:
+          type: string
+        brand_id:
+          type: string
+        model_id:
+          type: string
+        generation_id:
+          type: string
+        configuration_id:
+          type: string
+        complectation_id:
+          type: string
+        engine_hash:
+          type: string
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/DealersCarOptionsAttrMap'
+        photos:
+          type: array
+          items:
+            $ref: '#/components/schemas/DealersCarsPhotos'
+      required:
+        - id
+        - isMileageAbroad
+        - brand_id
+        - model_id
+        - generation_id
+        - configuration_id
+        - engine_hash
+        - options
+        - photos
+    DealersCarIdDto:
+      type: object
+      properties:
+        id:
+          type: string
+        sequence:
+          type: number
+      required:
+        - id
+        - sequence
+    MessageDto:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        process_id:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        author_name:
+          type: string
+        author_id:
+          type: string
+      required:
+        - id
+        - message
+        - process_id
+        - createdAt
+        - author_name
+        - author_id
+    ProcessesDecisionsDto:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      required:
+        - id
+        - name
+    ProcessDto:
+      type: object
+      properties:
+        id:
+          type: string
+        process_type:
+          type: string
+        lastMessage:
+          $ref: '#/components/schemas/MessageDto'
+        lastMessageDate:
+          format: date-time
+          type: string
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageDto'
+        is_decision_required:
+          type: boolean
+        is_process_closed:
+          type: boolean
+        offer_id:
+          type: string
+        lot_id:
+          type: string
+        dealers_car_id:
+          type: string
+        decisions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProcessesDecisionsDto'
+      required:
+        - id
+        - process_type
+        - lastMessage
+        - lastMessageDate
+        - messages
+        - is_decision_required
+        - is_process_closed
+        - offer_id
+        - lot_id
+        - dealers_car_id
+        - decisions
+    CreateMessageDto:
+      type: object
+      properties:
+        process_type:
+          type: string
+        message:
+          type: string
+        process_id:
+          type: string
+        lot_id:
+          type: string
+        offer_id:
+          type: string
+        dealers_car_id:
+          type: string
+        decision_id:
+          type: string
+      required:
+        - process_type
+        - message
+        - process_id
+        - lot_id
+        - offer_id
+        - dealers_car_id

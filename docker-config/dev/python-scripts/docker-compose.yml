@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  python-test:
+    build:
+      dockerfile: Dockerfile.python
+    container_name: python
+    volumes:
+      - ../python-scripts:/app
+    networks:
+      - dev_auctionnet
+
+networks:
+  dev_auctionnet:
+    external: true
+

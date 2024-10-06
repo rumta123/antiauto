@@ -1,0 +1,129 @@
+kind: pipeline
+type: kubernetes
+name: WheelAndDeal
+
+steps:
+- name: backend-build-and-push
+  image: plugins/docker
+  # privileged: true
+  environment: 
+    NODE_ENV: production
+    COLD_START: true             # ТОЛЬКО ДЛЯ ХОЛОДНОГО ПУСКА, инициализирует бд
+    DATABASE_HOST: 
+      from_secret: DATABASE_HOST
+    DATABASE_PORT:
+      from_secret: DATABASE_PORT
+    DATABASE_USER: 
+      from_secret: DATABASE_USER
+    DATABASE_PASSWORD:
+      from_secret: DATABASE_PASSWORD
+    JWT_SECRET: 
+      from_secret: JWT_SECRET
+    BACKEND_PORT: 
+      from_secret: BACKEND_PORT
+  settings:
+    build_args_from_env: BACKEND_PORT
+    repo: hub.musk.fun/k8s/wheel-and-deal/backend
+    registry: hub.musk.fun
+    tags: latest
+    context: ./backend
+    dockerfile: ./docker-config/prod/Dockerfile.backend
+    username:
+      from_secret: hub_username
+    password:
+      from_secret: hub_password
+  when:
+    event:
+      - push
+
+- name: db_migration-build-and-push
+  image: plugins/docker
+  # privileged: true
+  environment: 
+    NODE_ENV: production
+    DATABASE_HOST: 
+      from_secret: DATABASE_HOST
+    DATABASE_PORT:
+      from_secret: DATABASE_PORT
+    DATABASE_USER: 
+      from_secret: DATABASE_USER
+    DATABASE_PASSWORD:
+      from_secret: DATABASE_PASSWORD
+    BACKEND_PORT: 
+      from_secret: BACKEND_PORT
+  settings:
+    build_args_from_env: 
+      BACKEND_PORT
+      DATABASE_HOST
+      DATABASE_PORT
+    repo: hub.musk.fun/k8s/wheel-and-deal/db_migration
+    registry: hub.musk.fun
+    tags: latest
+    context: ./db_migration
+    dockerfile: ./docker-config/prod/Dockerfile.dbmigration
+    username:
+      from_secret: hub_username
+    password:
+      from_secret: hub_password
+  depends_on:
+  - backend-build-and-push
+  commands:
+  - printenv
+  - ./wait-for-it.sh backend:$BACKEND_PORT
+  - npm run migration:run
+  - npm run start:dev
+  when:
+    event:
+      - push
+
+- name: frontend-build-and-push
+  image: plugins/docker
+  # privileged: true
+  environment: 
+    NODE_ENV: production
+    PORT:
+      from_secret:FRONTEND_PORT
+    BACKEND_HOST:
+      from_secret: BACKEND_HOST
+    BACKEND_PORT: 
+      from_secret: BACKEND_PORT
+  settings:
+    build_args_from_env: 
+      PORT
+      BACKEND_HOST
+      BACKEND_PORT
+    repo: hub.musk.fun/k8s/wheel-and-deal/frontend
+    registry: hub.musk.fun
+    tags: latest
+    context: ./frontend
+    dockerfile: ./docker-config/prod/Dockerfile.frontend
+    username:
+      from_secret: hub_username
+    password:
+      from_secret: hub_password
+  depends_on:
+  - backend-build-and-push
+  when:
+    event:
+      - push
+
+# - name: deploy to k8s
+#   image: bitnami/kubectl:latest
+#   failure: ignore
+#   volumes:
+#   - name: kubectl-data
+#     path: /.kube/
+#   commands:
+#     - kubectl delete -f docker-config/prod/k8s/service.yaml
+#     - kubectl delete -f docker-config/prod/k8s/deployment.yaml
+#     - kubectl apply -f docker-config/prod/k8s/deployment.yaml
+#     - kubectl apply -f docker-config/prod/k8s/service.yaml
+
+trigger:
+  branch:
+    - deployment
+
+# volumes:
+# - name: kubectl-data
+#   claim:
+#     name: k8s-config-pvc

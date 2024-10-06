@@ -1,0 +1,50 @@
+{
+  "name": "car-auction",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "api:download": "wget http://localhost:3001/api-yaml -O ./src/shared/api/schema.yaml",
+    "api:generate": "orval"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.8.4",
+    "@types/socket.io": "^3.0.2",
+    "axios": "^1.6.1",
+    "chart.js": "^4.4.2",
+    "clsx": "^2.0.0",
+    "moment": "^2.30.1",
+    "next": "^14.1.0",
+    "primelocale": "^0.0.1",
+    "primereact": "^10.6.2",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hook-form": "^7.48.2",
+    "react-icons": "^4.11.0",
+    "react-redux": "^8.1.3",
+    "redux": "^4.2.1",
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2",
+    "tailwind-merge": "^2.2.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.1.1",
+    "@gravity-ui/icons": "^2.8.1",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@typescript-eslint/typescript-estree": "^7.6.0",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.0.2",
+    "orval": "^6.23.0",
+    "postcss": "^8",
+    "prettier": "^3.1.0",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.7.0"
+  }
+}

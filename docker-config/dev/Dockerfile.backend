@@ -1,0 +1,15 @@
+FROM node:21
+
+ARG PORT
+
+WORKDIR /app
+
+COPY . .
+
+RUN npm cache verify
+
+RUN npm ci --verbose
+
+EXPOSE ${PORT}
+
+CMD [ "npm", "run", "start:dev" ]

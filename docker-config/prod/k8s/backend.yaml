@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wheel-and-deal-backend
+  namespace: wheel-and-deal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wheel-and-deal-backend
+  template:
+    metadata:
+      labels:
+        app: wheel-and-deal-backend
+        tier: backend
+    spec:
+      containers:
+        - name: wheel-and-deal-backend
+          image: hub.musk.fun/k8s/wheel-and-deal/backend:latest
+          env:
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: wheel-and-deal-secret
+                  key: database_user
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: wheel-and-deal-secret
+                  key: database_password
+            - name: NODE_ENV
+              valueFrom:
+                secretKeyRef:
+                  name: wheel-and-deal-secret
+                  key: node_env
+            - name: COLD_START
+              valueFrom:
+                secretKeyRef:
+                  name: wheel-and-deal-secret
+                  key: cold_start
+            - name: DATABASE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: wheel-and-deal-secret
+                  key: database_host
+            - name: DATABASE_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: wheel-and-deal-secret
+                  key: database_port
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: wheel-and-deal-secret
+                  key: jwt_secret
+      imagePullSecrets:
+        - name: hubcred
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wheel-and-deal-backend-outter-np
+  namespace: wheel-and-deal
+spec:
+  type: NodePort
+  selector:
+    app: wheel-and-deal-backend
+  ports:
+    - name: wheel-and-deal-backend-public
+      protocol: TCP
+      port: 3001
+      targetPort: 3001
+      nodePort: 32110

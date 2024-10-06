@@ -1,0 +1,19 @@
+FROM node:21
+
+ARG PORT
+ARG BACKEND_HOST
+ARG BACKEND_PORT
+
+ENV BACKEND_HOST=$BACKEND_HOST
+ENV BACKEND_PORT=$BACKEND_PORT
+
+WORKDIR /app
+
+COPY . .
+RUN npm cache verify
+
+RUN npm i --verbose
+
+EXPOSE ${PORT}
+
+CMD [ "npm", "run", "dev" ]
